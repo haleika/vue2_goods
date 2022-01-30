@@ -10,3 +10,20 @@ src 源代码
     components 放置非路由的静态组件
 
 APP 根组件
+
+1.编程式导航进行路由跳转，多次点击会有错误警告
+原因：vue-router  最新的引进了promise
+解决1：通过给push方法传递相应的成功、错误的回调函数，可以捕获到错误，可以解决。但是治标不治本
+eg：this.$router.push(
+        {
+          name: "register",
+          params: { keyword: this.keyword },
+          query: { k: this.keyword },
+        },
+        () => {},
+        () => {}
+      );
+
+解决2：
+直接在vuerouter同一修改
+

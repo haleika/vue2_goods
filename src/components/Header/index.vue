@@ -8,7 +8,7 @@
           <p>
             <span>请</span>
             <router-link to="/login">登录</router-link>
-            <router-link to="/register"  class="register">免费注册</router-link>
+            <router-link to="/register" class="register">免费注册</router-link>
           </p>
         </div>
         <div class="typeList">
@@ -36,8 +36,13 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
+            v-model="keyword"
           />
-          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">
+          <button
+            class="sui-btn btn-xlarge btn-danger"
+            type="button"
+            @click="goSearch"
+          >
             搜索
           </button>
         </form>
@@ -49,11 +54,24 @@
 <script>
 export default {
   name: "Header",
-  methods:{
-    goSearch(){
-      this.$router.push('/search')
-    }
-  }
+  data() {
+    return {
+      keyword: "",
+    };
+  },
+  methods: {
+    goSearch() {
+      this.$router.push(
+        {
+          name: "register",
+          params: { keyword: this.keyword },
+          query: { k: this.keyword },
+        },
+        () => {},
+        () => {}
+      );
+    },
+  },
 };
 </script>
 
