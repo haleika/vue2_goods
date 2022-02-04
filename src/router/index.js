@@ -23,7 +23,7 @@ VueRouter.prototype.push = function(location,resolve,reject){
         originPush.call(this,location,resolve,reject)
     }
     else{
-        originPush.call(this.location,()=>{},()=>{})
+        originPush.call(this,location,()=>{},()=>{})
     }
 }
 

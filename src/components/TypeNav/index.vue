@@ -1,10 +1,10 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div  @mouseleave="leaveIndex">
+      <div @mouseleave="leaveIndex">
         <h2 class="all">全部商品分类</h2>
         <div class="sort">
-          <div class="all-sort-list2">
+          <div class="all-sort-list2" @click="goSearch">
             <div
               class="item"
               v-for="(c1, index) in categoryList"
@@ -12,9 +12,16 @@
               :class="{ cur: currentIndex === index }"
             >
               <h3 @mouseenter="changeIndex(index)">
-                <a href="">{{ c1.categoryName }}</a>
+                <a
+                  :data-categoryName="c1.categoryName"
+                  :data-category1Id="c1.categoryId"
+                  >{{ c1.categoryName }}</a
+                >
               </h3>
-              <div class="item-list clearfix" :style="{display:currentIndex === index ?'block':'none'}">
+              <div
+                class="item-list clearfix"
+                :style="{ display: currentIndex === index ? 'block' : 'none' }"
+              >
                 <div class="subitem">
                   <dl
                     class="fore"
@@ -22,11 +29,19 @@
                     :key="c2.categoryId"
                   >
                     <dt>
-                      <a href="">{{ c2.categoryName }}</a>
+                      <a
+                        :data-categoryName="c2.categoryName"
+                        :data-category2Id="c2.categoryId"
+                        >{{ c2.categoryName }}</a
+                      >
                     </dt>
                     <dd>
                       <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                        <a href="">{{ c3.categoryName }}</a>
+                        <a
+                          :data-categoryName="c3.categoryName"
+                          :data-category3Id="c3.categoryId"
+                          >{{ c3.categoryName }}</a
+                        >
                       </em>
                     </dd>
                   </dl>
@@ -52,7 +67,7 @@
     
 <script>
 import { mapState } from "vuex";
-import throttle from 'lodash/throttle'
+import throttle from "lodash/throttle";
 export default {
   name: "TypeNav",
   data() {
@@ -64,11 +79,38 @@ export default {
     // changeIndex(index) {
     //   this.currentIndex = index;
     // },
-    changeIndex:throttle(function(index){
+    changeIndex: throttle(function (index) {
       this.currentIndex = index;
-    },50),
+    }, 50),
     leaveIndex() {
       this.currentIndex = -1;
+    },
+    goSearch(event) {
+      // 编程式+事件委派
+      // this.$router.push({path: '/search'})
+      // 在子节点中加上自定义属性data-categoryName，其余子节点没有
+      let element = event.target;
+      //获取当触发的这个事件的节点，需要带有data-categoryName这样的节点【一定是a标签】
+      // 节点有一个属性dataset属性，可以获取节点的自定义属性和属性值
+      let { categoryname,category1id,category2id,category3id } = element.dataset;
+      // 如果有categoryname属性，那么一定是a标签
+      
+      if(categoryname){
+        let loaction = {path:'search'}
+        let query = {categoryName:categoryname}
+        if(category1id){
+          query.category1id = category1id
+        }
+        else if(category2id){
+          query.category2id = category2id
+        }
+        else if(category3id){
+          query.category3id = category3id
+        }
+        loaction.query = query
+        
+        this.$router.push(loaction)
+      }
     },
   },
   computed: {
