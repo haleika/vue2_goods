@@ -27,3 +27,6 @@ eg：this.$router.push(
 解决2：
 直接在vuerouter同一修改
 
+
+2.把三级联动注册为全局组件
+

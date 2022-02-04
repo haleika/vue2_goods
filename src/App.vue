@@ -3,7 +3,6 @@
     <Header />
     <!-- 路由组件展示 -->
     <router-view></router-view>
-    <div>{{$route.path}}</div>
     <!-- <Footer v-show="['/home','/search'].includes($route.path)"/> -->
     <Footer v-show="$route.meta && $route.meta.show"/>
   </div>
