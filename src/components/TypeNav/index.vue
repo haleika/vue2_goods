@@ -1,55 +1,59 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="leaveIndex">
+      <div @mouseleave="leaveIndex" @mouseenter="enterIndex">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
-          <div class="all-sort-list2" @click="goSearch">
-            <div
-              class="item"
-              v-for="(c1, index) in categoryList"
-              :key="c1.categoryId"
-              :class="{ cur: currentIndex === index }"
-            >
-              <h3 @mouseenter="changeIndex(index)">
-                <a
-                  :data-categoryName="c1.categoryName"
-                  :data-category1Id="c1.categoryId"
-                  >{{ c1.categoryName }}</a
-                >
-              </h3>
+        <transition name="sort">
+          <div class="sort" v-show="showSort">
+            <div class="all-sort-list2" @click="goSearch">
               <div
-                class="item-list clearfix"
-                :style="{ display: currentIndex === index ? 'block' : 'none' }"
+                class="item"
+                v-for="(c1, index) in categoryList"
+                :key="c1.categoryId"
+                :class="{ cur: currentIndex === index }"
               >
-                <div class="subitem">
-                  <dl
-                    class="fore"
-                    v-for="c2 in c1.categoryChild"
-                    :key="c2.categoryId"
+                <h3 @mouseenter="changeIndex(index)">
+                  <a
+                    :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId"
+                    >{{ c1.categoryName }}</a
                   >
-                    <dt>
-                      <a
-                        :data-categoryName="c2.categoryName"
-                        :data-category2Id="c2.categoryId"
-                        >{{ c2.categoryName }}</a
-                      >
-                    </dt>
-                    <dd>
-                      <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                </h3>
+                <div
+                  class="item-list clearfix"
+                  :style="{
+                    display: currentIndex === index ? 'block' : 'none',
+                  }"
+                >
+                  <div class="subitem">
+                    <dl
+                      class="fore"
+                      v-for="c2 in c1.categoryChild"
+                      :key="c2.categoryId"
+                    >
+                      <dt>
                         <a
-                          :data-categoryName="c3.categoryName"
-                          :data-category3Id="c3.categoryId"
-                          >{{ c3.categoryName }}</a
+                          :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId"
+                          >{{ c2.categoryName }}</a
                         >
-                      </em>
-                    </dd>
-                  </dl>
+                      </dt>
+                      <dd>
+                        <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                          <a
+                            :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId"
+                            >{{ c3.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -73,6 +77,7 @@ export default {
   data() {
     return {
       currentIndex: -1,
+      showSort: false,
     };
   },
   methods: {
@@ -84,6 +89,14 @@ export default {
     }, 50),
     leaveIndex() {
       this.currentIndex = -1;
+      if (!this.$route.meta.showSort) {
+        this.showSort = false;
+      }
+    },
+    enterIndex() {
+      if (!this.$route.meta.showSort) {
+        this.showSort = true;
+      }
     },
     goSearch(event) {
       // 编程式+事件委派
@@ -92,24 +105,27 @@ export default {
       let element = event.target;
       //获取当触发的这个事件的节点，需要带有data-categoryName这样的节点【一定是a标签】
       // 节点有一个属性dataset属性，可以获取节点的自定义属性和属性值
-      let { categoryname,category1id,category2id,category3id } = element.dataset;
+      let { categoryname, category1id, category2id, category3id } =
+        element.dataset;
       // 如果有categoryname属性，那么一定是a标签
-      
-      if(categoryname){
-        let loaction = {path:'search'}
-        let query = {categoryName:categoryname}
-        if(category1id){
-          query.category1id = category1id
+
+      if (categoryname) {
+        let loaction = { name: "search" };
+        let query = { categoryName: categoryname };
+        if (category1id) {
+          query.category1id = category1id;
+        } else if (category2id) {
+          query.category2id = category2id;
+        } else if (category3id) {
+          query.category3id = category3id;
         }
-        else if(category2id){
-          query.category2id = category2id
+
+        if (this.$route.params) {
+          loaction.query = query;
+
+          loaction.params = this.$route.params
+          this.$router.push(loaction);
         }
-        else if(category3id){
-          query.category3id = category3id
-        }
-        loaction.query = query
-        
-        this.$router.push(loaction)
       }
     },
   },
@@ -121,8 +137,7 @@ export default {
     }),
   },
   mounted() {
-    //通知vuex，获取数据，储存在仓库中
-    this.$store.dispatch("categoryList");
+    this.showSort = this.$route.meta.showSort;
   },
 };
 </script>
@@ -164,11 +179,11 @@ export default {
       top: 45px;
       width: 210px;
       height: 461px;
-      position: absolute;
       background: #fafafa;
       z-index: 999;
 
       .all-sort-list2 {
+        overflow: hidden;
         .cur {
           background-color: skyblue;
         }
@@ -247,6 +262,25 @@ export default {
           // }
         }
       }
+    }
+
+    .sort-enter {
+      opacity: 0;
+    }
+    .sort-enter-to {
+      opacity: 1;
+    }
+    .sort-enter-active {
+      transition: all 0.5s linear !important;
+    }
+    .sort-leave {
+      opacity: 1;
+    }
+    .sort-leave-to {
+      opacity: 0;
+    }
+    .sort-leave-active {
+      transition: all 0.5s linear !important;
     }
   }
 }

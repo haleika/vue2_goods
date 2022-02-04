@@ -6,16 +6,16 @@ const state = {
 }
 // 修改state的唯一手段
 const mutations={
-    CATEGORYLIST(state,data){
+    GETCATEGORYLIST(state,data){
         state.categoryList = data.slice(0,16)
     }
 }
 // 处理action，可以数学自己的业务逻辑，也可以处理异步
 const actions={
-    async categoryList({commit}){
+    async getCategoryList({commit}){
         let res = await reqCategoryList()
         if(res.code === 200){
-            commit('CATEGORYLIST',res.data)
+            commit('GETCATEGORYLIST',res.data)
         }
 
     }

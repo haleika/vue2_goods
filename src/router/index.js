@@ -3,10 +3,10 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-import Home from '@/pages/Home'
-import Login from '@/pages/Login'
-import Register from '@/pages/Register'
-import Search from '@/pages/Search'
+import Home from '@/views/Home'
+import Login from '@/views/Login'
+import Register from '@/views/Register'
+import Search from '@/views/Search'
 
 //重写vueRouter
 const originPush = VueRouter.prototype.push
@@ -37,7 +37,7 @@ export default new VueRouter({
         {
             path:"/home",
             component:Home,
-            meta:{show:true}
+            meta:{show:true,showSort:true}
         },
         {
             path:"/login",
@@ -48,9 +48,10 @@ export default new VueRouter({
             component:Register
         },
         {
-            path:"/search",
+            path:"/search/:keyword?",
+            name:"search",
             component:Search,
-            meta:{show:true}
+            meta:{show:true,showSort:false}
         },
     ]
 })
