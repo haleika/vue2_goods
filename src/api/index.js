@@ -3,6 +3,8 @@
 
 import requests from './request';
 
+import mockRequests from './mockApi';
+
 // 三级联动接口
 /**
  * url /api/product/getBaseCategoryList
@@ -10,3 +12,15 @@ import requests from './request';
  */
 
 export const reqCategoryList = () => requests({url:"/product/getBaseCategoryList",method:'GET'})
+
+
+export const reqGetBannerList = () =>mockRequests.get('/banner')
+
+export const reqGetFloorList = () =>mockRequests.get('/floor')
+
+
+export const reqGetSearchInfo = (params) =>requests({
+    url:'/list',
+    method:'POST',
+    data:params
+})

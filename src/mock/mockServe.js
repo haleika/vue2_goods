@@ -5,7 +5,7 @@ import banner from './banners.json'
 import floor from './floors.json'
 
 
-Mock.mock('/mock/banners',{code:200,data:banner})
+Mock.mock('/mock/banner',{code:200,data:banner})
 Mock.mock('/mock/floor',{code:200,data:floor})
 
 
