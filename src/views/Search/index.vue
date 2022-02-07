@@ -41,10 +41,28 @@
             <div class="navbar-inner filter">
               <ul class="sui-nav">
                 <li :class="{ active: isOne }" @click="changeOrder(1)">
-                  <a>综合<span v-show="isOne" class="iconfont" :class="{ 'icon-jiantou_xiangxia':isDesc,'icon-jiantou_xiangshang':isAsc}"></span></a>
+                  <a
+                    >综合<span
+                      v-show="isOne"
+                      class="iconfont"
+                      :class="{
+                        'icon-jiantou_xiangxia': isDesc,
+                        'icon-jiantou_xiangshang': isAsc,
+                      }"
+                    ></span
+                  ></a>
                 </li>
                 <li :class="{ active: isTwo }" @click="changeOrder(2)">
-                  <a>综合<span v-show="isTwo" class="iconfont" :class="{ 'icon-jiantou_xiangxia':isDesc,'icon-jiantou_xiangshang':isAsc}"></span></a>
+                  <a
+                    >综合<span
+                      v-show="isTwo"
+                      class="iconfont"
+                      :class="{
+                        'icon-jiantou_xiangxia': isDesc,
+                        'icon-jiantou_xiangshang': isAsc,
+                      }"
+                    ></span
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -93,36 +111,13 @@
               </li>
             </ul>
           </div>
-          <!-- <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div> -->
-          <Pagination/>
+          <Pagination
+            :pageNo="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :continues="5"
+            @getPageNo="getPageNo"
+          />
         </div>
       </div>
     </div>
@@ -132,7 +127,7 @@
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
 
-import { mapGetters } from "vuex";
+import { mapGetters,mapState } from "vuex";
 export default {
   name: "Search",
   data() {
@@ -144,7 +139,7 @@ export default {
         categoryName: "", //分类名字
         keyword: "", //搜索关键字
         order: "1:desc", //排序
-        pageNo: 1, //页数
+        pageNo: 8, //页数
         pageSize: 3, //每页多少条数据
         props: [], //平台售卖属性参数
         trademark: "", //品牌
@@ -200,17 +195,21 @@ export default {
       this.searchParams.props.splice(index, 1);
       this.getSearchList();
     },
-    changeOrder(flag){
+    changeOrder(flag) {
       let originOrder = this.searchParams.order;
-      let originFlag = this.searchParams.order.split(":")[0]
-      let orignSort = this.searchParams.order.split(":")[1]
-      let newOrder = ''
-      if(flag == originFlag){
-        newOrder = `${originFlag}:${orignSort=='desc'?'asc':'desc'}`
-      }else{
-        newOrder = `${flag}:desc`
+      let originFlag = this.searchParams.order.split(":")[0];
+      let orignSort = this.searchParams.order.split(":")[1];
+      let newOrder = "";
+      if (flag == originFlag) {
+        newOrder = `${originFlag}:${orignSort == "desc" ? "asc" : "desc"}`;
+      } else {
+        newOrder = `${flag}:desc`;
       }
-      this.searchParams.order = newOrder
+      this.searchParams.order = newOrder;
+      this.getSearchList();
+    },
+    getPageNo(page){
+      this.searchParams.pageNo = page
       this.getSearchList()
     }
   },
@@ -224,18 +223,21 @@ export default {
   },
   computed: {
     ...mapGetters(["goodsList"]),
+    ...mapState({
+      total:state=>state.search.searchList.total
+    }),
     isOne() {
       return this.searchParams.order.indexOf("1") != -1;
     },
     isTwo() {
       return this.searchParams.order.indexOf("2") != -1;
     },
-    isAsc(){
+    isAsc() {
       return this.searchParams.order.indexOf("asc") != -1;
     },
-    isDesc(){
+    isDesc() {
       return this.searchParams.order.indexOf("desc") != -1;
-    }
+    },
   },
 };
 </script>
