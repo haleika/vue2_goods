@@ -63,12 +63,16 @@ export default {
     goSearch() {
       let loaction = {
         name: "search",
-        params: { keyword: this.keyword || undefined }
+        params: { keyword: this.keyword || undefined },
       };
       loaction.query = this.$route.query;
-      console.log('-------loaction---------',loaction);
       this.$router.push(loaction);
     },
+  },
+  mounted() {
+    this.$bus.$on("clear", () => {
+      this.keyword = "";
+    });
   },
 };
 </script>

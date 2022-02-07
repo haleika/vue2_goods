@@ -11,10 +11,13 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-show="searchParams.categoryName">
+              {{ searchParams.categoryName
+              }}<i @click="removeCategoryName">×</i>
+            </li>
+            <li class="with-x" v-show="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
           </ul>
         </div>
 
@@ -135,16 +138,16 @@ export default {
   data() {
     return {
       searchParams: {
-        category1Id: "",//一级分类id
-        category2Id: "",//二级分类id
-        category3Id: "",//三级分类id
-        categoryName: "",//分类名字
-        keyword: "",//搜索关键字
-        order: "",//排序
-        pageNo: 1,//页数
-        pageSize: 3,//每页多少条数据
-        props: [],//平台售卖属性参数
-        trademark: "",//品牌
+        category1id: "", //一级分类id
+        category2id: "", //二级分类id
+        category3id: "", //三级分类id
+        categoryName: "", //分类名字
+        keyword: "", //搜索关键字
+        order: "", //排序
+        pageNo: 1, //页数
+        pageSize: 3, //每页多少条数据
+        props: [], //平台售卖属性参数
+        trademark: "", //品牌
       },
     };
   },
@@ -152,11 +155,39 @@ export default {
     SearchSelector,
   },
   mounted() {
+    Object.assign(this.searchParams, this.$route.query, this.$route.params);
     this.getSearchList();
   },
   methods: {
     getSearchList() {
-      this.$store.dispatch("getSearchList", {});
+      this.$store.dispatch("getSearchList", this.searchParams);
+    },
+    removeCategoryName() {
+      //删除分类的名字
+      this.searchParams.categoryName = undefined;
+      this.searchParams.category1id = undefined;
+      this.searchParams.category2id = undefined;
+      this.searchParams.category3id = undefined;
+      this.getSearchList();
+      if (this.$route.params) {
+        this.$router.push({ name: "search", params: this.$route.params });
+      }
+    },
+    removeKeyword() {
+      this.searchParams.keyword = undefined;
+      this.getSearchList();
+      this.$bus.$emit("clear");
+      if (this.$route.query) {
+        this.$router.push({ name: "search", query: this.$route.query });
+      }
+    },
+  },
+  watch: {
+    $route(newVal, OldVal) {
+      this.getSearchList();
+      this.searchParams.category1id = undefined;
+      this.searchParams.category2id = undefined;
+      this.searchParams.category3id = undefined;
     },
   },
   computed: {
