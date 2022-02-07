@@ -18,11 +18,22 @@
             <li class="with-x" v-show="searchParams.keyword">
               {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
             </li>
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removeTrademark">×</i>
+            </li>
+            <li
+              class="with-x"
+              v-for="(prop, index) in searchParams.props"
+              :key="index"
+            >
+              {{ prop.split(":")[1] }}<i @click="removeProp(index)">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @tradeMarkInfo="tradeMarkInfo" @attrInfo="attrInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -180,6 +191,25 @@ export default {
       if (this.$route.query) {
         this.$router.push({ name: "search", query: this.$route.query });
       }
+    },
+    removeTrademark() {
+      this.searchParams.trademark = undefined;
+      this.getSearchList();
+    },
+    tradeMarkInfo(tradeMark) {
+      this.searchParams.trademark = `${tradeMark.tmid}:${tradeMark.tmname}`;
+      this.getSearchList();
+    },
+    attrInfo(attrs, attrValue) {
+      let props = `${attrs.attrId}:${attrValue}:${attrs.attrName}`;
+      if (this.searchParams.props.indexOf(props) == -1) {
+        this.searchParams.props.push(props);
+        this.getSearchList();
+      }
+    },
+    removeProp(index) {
+      this.searchParams.props.splice(index, 1);
+      this.getSearchList();
     },
   },
   watch: {
