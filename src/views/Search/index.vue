@@ -40,23 +40,11 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder(1)">
+                  <a>综合<span v-show="isOne" class="iconfont" :class="{ 'icon-jiantou_xiangxia':isDesc,'icon-jiantou_xiangshang':isAsc}"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="changeOrder(2)">
+                  <a>综合<span v-show="isTwo" class="iconfont" :class="{ 'icon-jiantou_xiangxia':isDesc,'icon-jiantou_xiangshang':isAsc}"></span></a>
                 </li>
               </ul>
             </div>
@@ -105,7 +93,7 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
+          <!-- <div class="fr page">
             <div class="sui-pagination clearfix">
               <ul>
                 <li class="prev disabled">
@@ -133,7 +121,8 @@
               </ul>
               <div><span>共10页&nbsp;</span></div>
             </div>
-          </div>
+          </div> -->
+          <Pagination/>
         </div>
       </div>
     </div>
@@ -154,7 +143,7 @@ export default {
         category3id: "", //三级分类id
         categoryName: "", //分类名字
         keyword: "", //搜索关键字
-        order: "", //排序
+        order: "1:desc", //排序
         pageNo: 1, //页数
         pageSize: 3, //每页多少条数据
         props: [], //平台售卖属性参数
@@ -211,6 +200,19 @@ export default {
       this.searchParams.props.splice(index, 1);
       this.getSearchList();
     },
+    changeOrder(flag){
+      let originOrder = this.searchParams.order;
+      let originFlag = this.searchParams.order.split(":")[0]
+      let orignSort = this.searchParams.order.split(":")[1]
+      let newOrder = ''
+      if(flag == originFlag){
+        newOrder = `${originFlag}:${orignSort=='desc'?'asc':'desc'}`
+      }else{
+        newOrder = `${flag}:desc`
+      }
+      this.searchParams.order = newOrder
+      this.getSearchList()
+    }
   },
   watch: {
     $route(newVal, OldVal) {
@@ -222,6 +224,18 @@ export default {
   },
   computed: {
     ...mapGetters(["goodsList"]),
+    isOne() {
+      return this.searchParams.order.indexOf("1") != -1;
+    },
+    isTwo() {
+      return this.searchParams.order.indexOf("2") != -1;
+    },
+    isAsc(){
+      return this.searchParams.order.indexOf("asc") != -1;
+    },
+    isDesc(){
+      return this.searchParams.order.indexOf("desc") != -1;
+    }
   },
 };
 </script>
