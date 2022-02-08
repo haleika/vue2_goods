@@ -86,7 +86,7 @@
                     <a
                       target="_blank"
                       href="item.html"
-                      title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
+                      :title="good.title"
                       >{{ good.title }}</a
                     >
                   </div>
@@ -139,7 +139,7 @@ export default {
         categoryName: "", //分类名字
         keyword: "", //搜索关键字
         order: "1:desc", //排序
-        pageNo: 8, //页数
+        pageNo: 1, //页数
         pageSize: 3, //每页多少条数据
         props: [], //平台售卖属性参数
         trademark: "", //品牌
