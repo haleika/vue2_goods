@@ -13,11 +13,21 @@
 export default {
   name: "Zoom",
   props: ["skuImageList"],
-  computed:{
-    imgObj(){
-      return this.skuImageList[0] || {}
-    }
-  }
+  data() {
+    return {
+      currentIndex: 0,
+    };
+  },
+  computed: {
+    imgObj() {
+      return this.skuImageList[this.currentIndex] || {};
+    },
+  },
+  mounted() {
+    this.$bus.$on("getIndex", (index) => {
+      this.currentIndex = index;
+    });
+  },
 };
 </script>
 
