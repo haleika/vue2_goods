@@ -85,11 +85,12 @@
                 <dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
                 <dd
                   changepirce="0"
-                  :class="{active:spuSaleAttrValue.isChecked == '1'}"
+                  :class="{ active: spuSaleAttrValue.isChecked == '1' }"
                   v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
+                  @click="changeActive(spuSaleAttrValue,spuSaleAttr.spuSaleAttrValueList)"
                 >
-                  {{spuSaleAttrValue.saleAttrValueName}}
+                  {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
               </dl>
             </div>
@@ -345,6 +346,17 @@ import Zoom from "./Zoom/Zoom";
 
 export default {
   name: "Detail",
+  data() {
+    return {};
+  },
+  methods: {
+    changeActive(SaleAttrValue,arr) {
+      arr.forEach(item => {
+        item.isChecked = 0
+      });
+      SaleAttrValue.isChecked = 1
+    },
+  },
   mounted() {
     this.$store.dispatch("getGoodInfo", this.$route.params.skuId);
   },
