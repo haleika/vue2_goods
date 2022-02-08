@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import routes from './routes'
 
 Vue.use(VueRouter)
 
@@ -29,34 +30,9 @@ VueRouter.prototype.push = function (location, resolve, reject) {
 
 
 export default new VueRouter({
-    routes: [
-        {
-            path: "/",
-            redirect: "/home"
-        },
-        {
-            path: "/home",
-            meta: { show: true, showSort: true },
-            component: resolve => require(['@/views/Home'], resolve)
-        },
-        {
-            path: "/login",
-            component: resolve => require(['@/views/Login'], resolve)
-        },
-        {
-            path: "/register",
-            component: resolve => require(['@/views/Register'], resolve)
-        },
-        {
-            path: "/search/:keyword?",
-            name: "search",
-            component: resolve => require(['@/views/Search'], resolve),
-            meta: { show: true, showSort: false }
-        },
-        {
-            path: "/Detail/:skuid?",
-            name: "search",
-            component: resolve => require(['@/views/Detail'], resolve)
-        },
-    ]
+    routes,
+    scrollBehavior(to, from, savedPosition) {
+        // 始终滚动到顶部
+        return { y: 0 }
+    },
 })
