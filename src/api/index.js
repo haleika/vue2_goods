@@ -29,3 +29,8 @@ export const reqGoodsInfo = (skuId) => requests({
     url:`/item/${skuId}`,
     method:'GET'
 })
+
+export const reqAddOrUpdateShopCar = (skuId,skuNum) =>requests({
+    url:`/cart/addToCart/${skuId}/${skuNum}`,
+    method:'POST'
+})

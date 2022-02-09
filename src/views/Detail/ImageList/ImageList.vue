@@ -4,7 +4,7 @@
       <div
         class="swiper-slide"
         v-for="(slide,index) in skuImageList"
-        :key="slide.skuId"
+        :key="slide.id"
       >
         <img :src="slide.imgUrl" @click="changeCurrentIndex(index)" :class="{active:currentIndex == index}"/>
       </div>

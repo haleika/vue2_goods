@@ -88,7 +88,12 @@
                   :class="{ active: spuSaleAttrValue.isChecked == '1' }"
                   v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
-                  @click="changeActive(spuSaleAttrValue,spuSaleAttr.spuSaleAttrValueList)"
+                  @click="
+                    changeActive(
+                      spuSaleAttrValue,
+                      spuSaleAttr.spuSaleAttrValueList
+                    )
+                  "
                 >
                   {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
@@ -96,12 +101,22 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  @change="changeSkuNum"
+                  class="itxt"
+                  v-model.number="skuNum"
+                />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopcar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -347,14 +362,31 @@ import Zoom from "./Zoom/Zoom";
 export default {
   name: "Detail",
   data() {
-    return {};
+    return { skuNum: 1 };
   },
   methods: {
-    changeActive(SaleAttrValue,arr) {
-      arr.forEach(item => {
-        item.isChecked = 0
+    changeActive(SaleAttrValue, arr) {
+      arr.forEach((item) => {
+        item.isChecked = 0;
       });
-      SaleAttrValue.isChecked = 1
+      SaleAttrValue.isChecked = 1;
+    },
+    changeSkuNum(event) {
+      let value = event.target.value * 1;
+      if (isNaN(value) || value < 1) {
+        this.skuNum = 1;
+      } else {
+        this.skuNum = parseInt(value);
+      }
+    },
+    async addShopcar() {
+      try {
+        let red = await this.$store.dispatch("addGoodInfo", {
+          skuId: this.$route.params.skuId,
+          skuNum: this.skuNum,
+        });
+        // this.$route.push({name:""})
+      } catch {}
     },
   },
   mounted() {

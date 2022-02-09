@@ -37,4 +37,7 @@ eg：this.$router.push(
 
 4.vuex状态管理库
 
-4.1buex是一个官方提供的插件，状态管理库，集中式项目中组件公用的数据。
+4.1 vuex是一个官方提供的插件，状态管理库，集中式项目中组件公用的数据。
+
+5 $bus 在App.vue中的beforcreate函数中设置Vue.prototype.$bus = this
+
