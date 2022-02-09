@@ -10,10 +10,12 @@ export default [
     },
     {
         path: "/login",
+        name: "login",
         component: resolve => require(['@/views/Login'], resolve)
     },
     {
         path: "/register",
+        name: "register",
         component: resolve => require(['@/views/Register'], resolve)
     },
     {

@@ -9,6 +9,7 @@ import home from './home'
 import search from './search'
 import detail from './detail'
 import shopCar from './shopCar'
+import user from './user'
 
 // 对外暴露
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
         home,
         search,
         detail,
-        shopCar
+        shopCar,
+        user
     }
 })
