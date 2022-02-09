@@ -1,7 +1,9 @@
 
-import { reqGoodsInfo,reqAddOrUpdateShopCar } from '@/api'
+import { reqGoodsInfo, reqAddOrUpdateShopCar } from '@/api'
+import { getUUID } from '@/utils/uuid_token'
 const state = {
-    goodsInfo: {}
+    goodsInfo: {},
+    uuid_token:getUUID()
 }
 
 const mutations = {
@@ -17,9 +19,9 @@ const actions = {
             commit('GETGOODINFO', res.data)
         }
     },
-    async addGoodInfo({ commit }, {skuId,skuNum}){
-        let res = await reqAddOrUpdateShopCar(skuId,skuNum)
-        if(res.code == 200){
+    async addGoodInfo({ commit }, { skuId, skuNum }) {
+        let res = await reqAddOrUpdateShopCar(skuId, skuNum)
+        if (res.code == 200) {
             return 'ok'
         } else {
             return Promise.reject(new Error("fail"))
@@ -28,13 +30,13 @@ const actions = {
 }
 
 const getters = {
-    categoryView(state){
+    categoryView(state) {
         return state.goodsInfo.categoryView || {}
     },
-    skuInfo(state){
+    skuInfo(state) {
         return state.goodsInfo.skuInfo || {}
     },
-    spuSaleAttrList(state){
+    spuSaleAttrList(state) {
         return state.goodsInfo.spuSaleAttrList || []
     }
 }

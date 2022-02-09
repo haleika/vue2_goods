@@ -25,6 +25,19 @@ export default [
     {
         path: "/Detail/:skuId?",
         name: "search",
-        component: resolve => require(['@/views/Detail'], resolve)
+        component: resolve => require(['@/views/Detail'], resolve),
+        meta: { show: true }
+    },
+    {
+        path: "/addCartSuccess",
+        name: "AddCartSuccess",
+        component: resolve => require(['@/views/AddCartSuccess'], resolve),
+        meta: { show: true }
+    },
+    {
+        path: "/shopCart",
+        name: "ShopCart",
+        component: resolve => require(['@/views/ShopCart'], resolve),
+        meta: { show: true }
     },
 ]

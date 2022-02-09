@@ -385,8 +385,11 @@ export default {
           skuId: this.$route.params.skuId,
           skuNum: this.skuNum,
         });
-        // this.$route.push({name:""})
-      } catch {}
+        sessionStorage.setItem("SKUINFO",JSON.stringify(this.skuInfo))
+        this.$router.push({name:"AddCartSuccess",query:{skuNum:this.skuNum}})
+      } catch {
+        alert('PPP')
+      }
     },
   },
   mounted() {

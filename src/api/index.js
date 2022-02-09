@@ -34,3 +34,8 @@ export const reqAddOrUpdateShopCar = (skuId,skuNum) =>requests({
     url:`/cart/addToCart/${skuId}/${skuNum}`,
     method:'POST'
 })
+
+export const reqCarList = () =>requests({
+    url:`/cart/cartList`,
+    method:'GET'
+})
