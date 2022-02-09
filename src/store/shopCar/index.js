@@ -1,5 +1,5 @@
 
-import { reqCarList } from '@/api'
+import { reqCarList, reqDeleteCartById, reqUpdateCheckedById } from '@/api'
 const state = {
     carList: []
 }
@@ -15,6 +15,17 @@ const actions = {
         let res = await reqCarList()
         if (res.code == 200) {
             commit("GETCARLIST", res.data)
+        }
+    },
+    async deleteCartListBySkuId({ commit }, skuId) {
+        await reqDeleteCartById(skuId)
+    },
+    async updateCheckedById({ commit }, { skuId, isChecked }) {
+        let res = await reqUpdateCheckedById(skuId, isChecked)
+        if(res.code == 200){
+            return "ok"
+        } else{
+            return Promise.reject(new Error("fail"))
         }
     }
 }

@@ -20,6 +20,7 @@
             <input
               type="checkbox"
               name="chk_list"
+              @change="updateChecked(cartInfo, $event)"
               :checked="cartInfo.isChecked == 1"
             />
           </li>
@@ -31,22 +32,22 @@
             <span class="price">{{ cartInfo.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
+            <a @click="handler('minus', 1, cartInfo)" class="mins">-</a>
             <input
               autocomplete="off"
               type="text"
-              value="1"
               minnum="1"
               class="itxt"
-              v-model="cartInfo.skuNum"
+              @change="handler('change', $event.target.value * 1, cartInfo)"
+              :value="cartInfo.skuNum"
             />
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a @click="handler('add', 1, cartInfo)" class="plus">+</a>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{ cartInfo.skuNum * cartInfo.skuPrice }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a @click="deleteCartById(cartInfo)" class="sindelet">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -55,7 +56,7 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isAll"/>
+        <input class="chooseAll" type="checkbox" :checked="isAll" />
         <span>全选</span>
       </div>
       <div class="option">
@@ -81,6 +82,7 @@
 </template>
 
 <script>
+import throttle from "lodash/throttle";
 import { mapGetters } from "vuex";
 export default {
   name: "ShopCart",
@@ -91,6 +93,43 @@ export default {
     getData() {
       this.$store.dispatch("getCarList");
     },
+    handler: throttle(async function (type, disNum, cart) {
+      switch (type) {
+        case "add":
+          disNum = 1;
+          break;
+        case "minus":
+          disNum = cart.skuNum > 1 ? -1 : 0;
+          break;
+        case "change":
+          if (isNaN(disNum) || disNum < 1) {
+            disNum = 1;
+          } else {
+            disNum = parseInt(disNum) - cart.skuNum;
+          }
+      }
+      try {
+        await this.$store.dispatch("addGoodInfo", {
+          skuId: cart.skuId,
+          skuNum: disNum,
+        });
+        this.getData();
+      } catch (error) {}
+    }, 500),
+    deleteCartById: throttle(async function (cart) {
+      try {
+        await this.$store.dispatch("deleteCartListBySkuId", cart.skuId);
+        this.getData();
+      } catch {}
+    }, 20),
+    async updateChecked(cart,event){
+      try{
+        await this.$store.dispatch("updateCheckedById",{"skuId":cart.skuId,"isChecked":event.target.checked?1:0})
+        this.getData()
+      } catch{
+
+      }
+    }
   },
   computed: {
     ...mapGetters(["cartList"]),

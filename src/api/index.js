@@ -39,3 +39,13 @@ export const reqCarList = () =>requests({
     url:`/cart/cartList`,
     method:'GET'
 })
+
+export const reqDeleteCartById = (skuId) =>requests({
+    url:`/cart/deleteCart/${skuId}`,
+    method:'DELETE'
+})
+// 修改商品选中
+export const reqUpdateCheckedById = (skuId,isChecked) =>requests({
+    url:`/cart/checkCart/${skuId}/${isChecked}`,
+    method:'GET'
+})
