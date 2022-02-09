@@ -4,6 +4,9 @@ import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 //start:进度条开始  done：进度条结束
 
+//引入store
+import store from "@/store"
+
 //1.利用axios对象方法create，去创建一个axios对象
 
 const requests = axios.create({
@@ -12,9 +15,12 @@ const requests = axios.create({
 })
 
 // 请求拦截器，在发请求前可以检测，可以在发请求前拦截一些事情
-requests.interceptors.request.use(condig=>{
+requests.interceptors.request.use(config=>{
     nprogress.start()
-    return condig;
+    if(store.state.detail.uuid_token){
+        config.headers.userTempId = store.state.detail.uuid_token
+    }
+    return config;
 })
 
 
