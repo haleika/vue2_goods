@@ -20,8 +20,8 @@ const actions = {
 }
 
 const getters = {
-    cartInfoList(state){
-        return state.carList[0].cartInfoList || []
+    cartList(state) {
+        return state.carList[0] || []
     }
 }
 
