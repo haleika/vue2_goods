@@ -1,5 +1,5 @@
-import { reqGetCode, reqUserRegister, reqUserLogin, reqUserInfo } from '@/api'
-import { setToken,getToken } from "@/utils/token"
+import { reqGetCode, reqUserRegister, reqUserLogin, reqUserInfo,reqLoginOut } from '@/api'
+import { setToken,getToken,removeToken } from "@/utils/token"
 //储存数据
 const state = {
     code: "",
@@ -16,6 +16,12 @@ const mutations = {
     },
     GETUSERINFO(state, data) {
         state.userInfo = data
+    },
+    LOGINOUT(state){
+        // 清空仓库数据，清空本地存储
+        state.token = ""
+        state.userInfo = ""
+        removeToken()
     }
 }
 // 处理action，可以数学自己的业务逻辑，也可以处理异步
@@ -58,6 +64,15 @@ const actions = {
             commit("GETUSERINFO", res.data)
             return "ok"
         } else {
+            return Promise.reject(new Error(res.message))
+        }
+    },
+    async loginOut({commit}){
+        let res = await reqLoginOut()
+        if(res.code == 200){
+            commit("LOGINOUT")
+            return "ok"
+        }else{
             return Promise.reject(new Error(res.message))
         }
     }

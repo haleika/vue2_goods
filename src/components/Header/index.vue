@@ -11,8 +11,8 @@
             <router-link to="/register" class="register">免费注册</router-link>
           </p>
           <p v-else>
-            <a>{{userName}}</a>
-            <a class="register">退出登录</a>
+            <a>{{ userName }}</a>
+            <a class="register" @click="logOut">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -72,20 +72,26 @@ export default {
       loaction.query = this.$route.query;
       this.$router.push(loaction);
     },
+    async logOut() {
+      try {
+        await this.$store.dispatch("loginOut");
+        this.$router.push({ name: "home" });
+      } catch {}
+    },
   },
   mounted() {
     this.$bus.$on("clear", () => {
       this.keyword = "";
     });
   },
-  computed:{
-    userName(){
-      return this.$store.state.user.userInfo.name
+  computed: {
+    userName() {
+      return this.$store.state.user.userInfo.name;
     },
-    userId(){
-      return this.$store.state.user.userInfo.id
-    }
-  }
+    userId() {
+      return this.$store.state.user.userInfo.id;
+    },
+  },
 };
 </script>
 
