@@ -132,13 +132,13 @@ export default {
             done();
           } else {
             //判断是否真的支付了
-            if (this.code == 200) {
+            // if (this.code == 200) {
               clearInterval(this.timer);
               this.timer = null;
               done();
               this.$router.push({ name: "paysuccess" });
             }
-          }
+          // }
         },
       });
       if (!this.timer) {

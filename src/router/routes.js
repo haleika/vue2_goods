@@ -61,4 +61,24 @@ export default [
         component: resolve => require(['@/views/PaySuccess'], resolve),
         meta: { show: true }
     },
+    {
+        path: "/center",
+        name: "Center",
+        component: resolve => require(['@/views/Center'], resolve),
+        meta: { show: true },
+        children:[
+            {
+                path:"/center",
+                redirect:"/center/myorder"
+            },
+            {
+                path:'myorder',
+                component:resolve => require(['@/views/Center/MyOrder'], resolve),
+            },
+            {
+                path:'grouporder',
+                component:resolve => require(['@/views/Center/GroupOrder'], resolve),
+            }
+        ]
+    },
 ]
