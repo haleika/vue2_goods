@@ -21,9 +21,6 @@ export default {
   mounted() {
     //通知vuex，获取数据，储存在仓库中
     this.$store.dispatch("getCategoryList");
-  },
-  beforeCreate(){
-    Vue.prototype.$bus = this
   }
 };
 </script>

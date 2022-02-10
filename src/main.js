@@ -8,11 +8,13 @@ import 'swiper/css/swiper.css'
 import TypeNav from '@/components/TypeNav'
 import Carousel from '@/components/Carousel'
 import Pagination from '@/components/Pagination'
-Vue.component(TypeNav.name,TypeNav)
-Vue.component(Carousel.name,Carousel)
-Vue.component(Pagination.name,Pagination)
+Vue.component(TypeNav.name, TypeNav)
+Vue.component(Carousel.name, Carousel)
+Vue.component(Pagination.name, Pagination)
 
 
+
+import * as API from '@/api'
 
 Vue.config.productionTip = false
 
@@ -23,5 +25,9 @@ import router from '@/router'
 new Vue({
   render: h => h(App),
   router,
-  store
+  store,
+  beforeCreate() {
+    Vue.prototype.$bus = this
+    Vue.prototype.$API = API
+  }
 }).$mount('#app')

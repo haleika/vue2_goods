@@ -90,3 +90,12 @@ export const reqOrderInfo = () => requests({
     url: `order/auth/trade`,
     method: 'get'
 })
+
+
+// 提交订单
+
+export const reqSubnitOrder = (tradeNo,data) => requests({
+    url: `order/auth/submitOrder?tradeNo=${tradeNo}`,
+    method: 'POST',
+    data
+})
