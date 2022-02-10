@@ -5,6 +5,7 @@ export default [
     },
     {
         path: "/home",
+        name: "home",
         meta: { show: true, showSort: true },
         component: resolve => require(['@/views/Home'], resolve)
     },

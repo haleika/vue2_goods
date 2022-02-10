@@ -62,3 +62,9 @@ export const reqUserRegister = (params) => requests({
     method: 'POST',
     data: params
 })
+
+export const reqUserLogin = (params) => requests({
+    url: `user/passport/login`,
+    method: 'POST',
+    data: params
+})

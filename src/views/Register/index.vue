@@ -91,6 +91,7 @@ export default {
     },
     async userRegister() {
       // 注册
+
       try {
         let { code, phone, password, password1 } = this;
         phone &&
@@ -102,8 +103,10 @@ export default {
             password,
             password1,
           }));
-        this.$router.push("/login");
-      } catch {}
+        this.$router.push({ name: "login" });
+      } catch (error) {
+        console.log('-------error---------',error);
+      }
     },
   },
 };
