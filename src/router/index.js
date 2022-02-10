@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -29,10 +30,40 @@ VueRouter.prototype.push = function (location, resolve, reject) {
 }
 
 
-export default new VueRouter({
+let router = new VueRouter({
     routes,
     scrollBehavior(to, from, savedPosition) {
         // 始终滚动到顶部
         return { y: 0 }
     },
 })
+
+router.beforeEach(async (to, from, next) => {
+    //to要跳转到哪个路由的信息
+    //from 从哪个路由来
+    //next放行
+    const token = store.state.user.token
+    const name = store.state.user.userInfo.name
+    if (token) {
+        if (to.path == '/login') {
+            next('/home')
+        } else {
+            if (name) {
+                next()
+            } else {
+                try {
+                    await store.dispatch("getUserInfo");
+                    next()
+                } catch {
+                    // token失效
+                    await store.dispatch("loginOut")
+                    next('/login')
+                }
+            }
+        }
+    } else {
+        next()
+    }
+})
+
+export default router
