@@ -12,6 +12,12 @@ Vue.component(TypeNav.name, TypeNav)
 Vue.component(Carousel.name, Carousel)
 Vue.component(Pagination.name, Pagination)
 
+import { MessageBox } from 'element-ui';
+// Vue.component(Message.name, Message);
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$prompt = MessageBox.prompt;
 
 
 import * as API from '@/api'
