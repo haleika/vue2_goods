@@ -99,3 +99,8 @@ export const reqSubnitOrder = (tradeNo,data) => requests({
     method: 'POST',
     data
 })
+
+export const reqPayInfo = (orderId) => requests({
+    url: `payment/weixin/createNative/${orderId}`,
+    method: 'GET'
+})

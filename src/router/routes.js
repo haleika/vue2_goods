@@ -49,4 +49,10 @@ export default [
         component: resolve => require(['@/views/Trade'], resolve),
         meta: { show: true }
     },
+    {
+        path: "/pay",
+        name: "Pay",
+        component: resolve => require(['@/views/Pay'], resolve),
+        meta: { show: true }
+    },
 ]
