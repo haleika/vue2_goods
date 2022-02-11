@@ -62,7 +62,7 @@ export default [
         component: resolve => require(['@/views/Pay'], resolve),
         meta: { show: true },
         beforeEnter(to,from,next){
-            if(from.path == '/trade'){
+            if(from.path == '/Trade' || from.path == '/trade'){
                 next()
             }else{
                 next(false)
