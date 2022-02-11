@@ -93,7 +93,9 @@ export default {
           password: this.password,
         });
         if (res == "ok") {
-          this.$router.push({ name: "home" });
+          // this.$router.push({ name: "home" });
+          let path = this.$route.query.redirect || '/home'
+          this.$router.push(path)
         }
       } catch (error) {
         console.log("-------error---------", error);
