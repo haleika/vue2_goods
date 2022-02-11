@@ -125,17 +125,17 @@ export default {
         confirmButtonText: "已支付成功",
         showClose: false,
         beforeClose: (type, instance) => {
-          if ((type = "cancel")) {
+          if (type == "cancel") {
             alert("请联系管理员");
             clearInterval(this.timer);
             this.timer = null;
-            done();
+            this.$msgbox.close();
           } else {
             //判断是否真的支付了
             // if (this.code == 200) {
               clearInterval(this.timer);
               this.timer = null;
-              done();
+            this.$msgbox.close();
               this.$router.push({ name: "paysuccess" });
             }
           // }
