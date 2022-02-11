@@ -47,13 +47,27 @@ export default [
         path: "/trade",
         name: "Trade",
         component: resolve => require(['@/views/Trade'], resolve),
-        meta: { show: true }
+        meta: { show: true },
+        beforeEnter(to,from,next){
+            if(from.path == '/shopCart'){
+                next()
+            }else{
+                next(false)
+            }
+        }
     },
     {
         path: "/pay",
         name: "Pay",
         component: resolve => require(['@/views/Pay'], resolve),
-        meta: { show: true }
+        meta: { show: true },
+        beforeEnter(to,from,next){
+            if(from.path == '/trade'){
+                next()
+            }else{
+                next(false)
+            }
+        }
     },
     {
         path: "/paysuccess",
