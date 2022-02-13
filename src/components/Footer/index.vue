@@ -3,7 +3,7 @@
     <div class="footer-container">
       <div class="footerList">
         <div class="footerItem">
-          <h4>购物指南</h4>
+          <h4 v-Upper="msg">购物指南</h4>
           <ul class="footerItemCon">
             <li>购物流程</li>
             <li>会员介绍</li>
@@ -108,6 +108,11 @@
 <script>
 export default {
   name: "Footer",
+  data () {
+    return {
+      msg:"qasdfgh"
+    }
+  }
 };
 </script>
 

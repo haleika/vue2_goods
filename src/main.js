@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import store from '@/store'
+import VueLazyload from 'vue-lazyload'
 
 // 引入swiper样式
 import 'swiper/css/swiper.css'
@@ -25,6 +26,20 @@ import * as API from '@/api'
 Vue.config.productionTip = false
 
 import '@/mock/mockServe'
+
+import DEFAULTIMG from '@/assets/default.gif'
+
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  loading: DEFAULTIMG,
+  attempt: 1
+})
+
+// 自定义组件
+import Upper from "@/plugin/upper"
+Vue.use(Upper, {
+  name: "Upper"
+})
 
 // 引入路由
 import router from '@/router'
