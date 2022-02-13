@@ -7,46 +7,46 @@ export default [
         path: "/home",
         name: "home",
         meta: { show: true, showSort: true },
-        component: resolve => require(['@/views/Home'], resolve)
+        component: ()=>import('@/views/Home')
     },
     {
         path: "/login",
         name: "login",
-        component: resolve => require(['@/views/Login'], resolve)
+        component: ()=>import('@/views/Login'),
     },
     {
         path: "/register",
         name: "register",
-        component: resolve => require(['@/views/Register'], resolve)
+        component: ()=>import('@/views/Register'),
     },
     {
         path: "/search/:keyword?",
         name: "search",
-        component: resolve => require(['@/views/Search'], resolve),
+        component: ()=>import('@/views/Search'),
         meta: { show: true, showSort: false }
     },
     {
         path: "/Detail/:skuId?",
         name: "search",
-        component: resolve => require(['@/views/Detail'], resolve),
+        component: ()=>import('@/views/Detail'),
         meta: { show: true }
     },
     {
         path: "/addCartSuccess",
         name: "AddCartSuccess",
-        component: resolve => require(['@/views/AddCartSuccess'], resolve),
+        component: ()=>import('@/views/AddCartSuccess'),
         meta: { show: true }
     },
     {
         path: "/shopCart",
         name: "ShopCart",
-        component: resolve => require(['@/views/ShopCart'], resolve),
+        component: ()=>import('@/views/ShopCart'),
         meta: { show: true }
     },
     {
         path: "/trade",
         name: "Trade",
-        component: resolve => require(['@/views/Trade'], resolve),
+        component: ()=>import('@/views/Trade'),
         meta: { show: true },
         beforeEnter(to,from,next){
             if(from.path == '/shopCart'){
@@ -59,7 +59,7 @@ export default [
     {
         path: "/pay",
         name: "Pay",
-        component: resolve => require(['@/views/Pay'], resolve),
+        component: ()=>import('@/views/Pay'),
         meta: { show: true },
         beforeEnter(to,from,next){
             if(from.path == '/Trade' || from.path == '/trade'){
@@ -72,13 +72,13 @@ export default [
     {
         path: "/paysuccess",
         name: "paysuccess",
-        component: resolve => require(['@/views/PaySuccess'], resolve),
+        component: ()=>import('@/views/PaySuccess'),
         meta: { show: true }
     },
     {
         path: "/center",
         name: "Center",
-        component: resolve => require(['@/views/Center'], resolve),
+        component: ()=>import('@/views/Center'),
         meta: { show: true },
         children:[
             {
@@ -87,7 +87,7 @@ export default [
             },
             {
                 path:'myorder',
-                component:resolve => require(['@/views/Center/MyOrder'], resolve),
+                component:()=>import('@/views/Center/MyOrder'),
             },
             {
                 path:'grouporder',
