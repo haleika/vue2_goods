@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from '@/store'
 import VueLazyload from 'vue-lazyload'
+import '@/plugin/validate'
 
 // 引入swiper样式
 import 'swiper/css/swiper.css'
